@@ -4,7 +4,6 @@ import "fmt"
 
 func main(){
 	
-	//Mañana
 	//Ej 1
 
 	var nombre = "Gonzalo Sibona"
@@ -30,7 +29,7 @@ func main(){
 	/*
 	var nombre string //mal declarado, 1nombre => nombre
 	var apellido string 
-	var int edad
+	var edad int // mal declarado, primero va el nombre de la variable y despues el numero
 	apellido := 6 //mal declarado, 1apellido => apellido, 
 	var licencia_de_conducir = true
 	var estatura_de_la_persona int //mal declarado, estatura de la persona => estatura_de_la_persona
