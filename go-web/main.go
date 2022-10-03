@@ -33,7 +33,7 @@ func main(){
 	router.Run()
 }
 
-var getAll func(c *gin.Context)= func(c *gin.Context){
+func getAll(c *gin.Context){
 	
 	data,err1:= os.ReadFile("productos.json")
 	if err1!=nil{
