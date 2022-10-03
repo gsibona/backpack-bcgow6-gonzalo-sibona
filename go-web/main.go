@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +31,7 @@ func main(){
 		})
 	})
 	router.GET("/productos", getAll)
+	router.GET("/productos/:id", getOne)
 	router.Run()
 }
 
@@ -40,16 +42,68 @@ func getAll(c *gin.Context){
 		c.JSON(http.StatusInternalServerError,gin.H{
 			"error": err1.Error(),
 		})
+		return
 	}
 	var products Products
 	err2 := json.Unmarshal(data,&products)
 	if err2!=nil{
 		c.JSON(http.StatusInternalServerError,gin.H{
 			"error": err2.Error(),
-			"data": string(data),
 		})
+		return
 	}
-	if err1 == nil && err2 == nil{
-		c.JSON(http.StatusOK,products)
+	if c.Query("Publicado")!=""{
+		b, err4 := strconv.ParseBool(c.Query("Publicado"))
+		if err4!=nil{
+			c.JSON(http.StatusInternalServerError,gin.H{
+				"error": err4.Error(),
+			})
+			return
+		}
+		var p2 Products
+		for _,p :=range products.Productos{
+			if p.Publicado==b{
+				p2.Productos = append(p2.Productos, p)
+			}
+		}
+		products = p2
 	}
+	c.JSON(http.StatusOK,products)
+}
+
+func getOne(c *gin.Context){
+	id := c.Param("id")
+	data,err1:= os.ReadFile("productos.json")
+	if err1!=nil{
+		c.JSON(http.StatusInternalServerError,gin.H{
+			"error": err1.Error(),
+		})
+		return
+	}
+	var products Products
+	err2 := json.Unmarshal(data,&products)
+	if err2!=nil{
+		c.JSON(http.StatusInternalServerError,gin.H{
+			"error": err2.Error(),
+		})
+		return
+	}
+	idValue,err3 := strconv.Atoi(id)
+	if err2!=nil{
+		c.JSON(http.StatusInternalServerError,gin.H{
+			"error": err3.Error(),
+		})
+		return
+	}
+	product := products.GetById(idValue)
+	c.JSON(http.StatusAccepted, product)
+}
+
+func (products *Products) GetById(id int) (product Product){
+	for _,p:=range products.Productos{
+		if p.ID == id{
+			product = p
+		}
+	}
+	return
 }
