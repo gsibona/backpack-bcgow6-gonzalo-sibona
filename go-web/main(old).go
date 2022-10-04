@@ -93,7 +93,7 @@ func getOne(c *gin.Context){
 		return
 	}
 	idValue,err3 := strconv.Atoi(id)
-	if err2!=nil{
+	if err3!=nil{
 		c.JSON(http.StatusInternalServerError,gin.H{
 			"error": err3.Error(),
 		})
