@@ -23,15 +23,19 @@ type Products struct{
 	Productos []Product `json:"productos"`
 }
 
+var prod Products = Products{[]Product{{1,"lapicera","rojo",100.00,400,"gy87sdbh874",true,"03/10/2022"}}}
+
 func main(){
 	router:= gin.Default()
+	prodRouter := router.Group("/productos")
 	router.GET("", func(c *gin.Context){
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Hola Gonzalo",
 		})
 	})
-	router.GET("/productos", getAll)
-	router.GET("/productos/:id", getOne)
+	prodRouter.GET("/", getAll)
+	prodRouter.GET("/:id", getOne)
+	prodRouter.POST("/",save)
 	router.Run()
 }
 
@@ -106,4 +110,58 @@ func (products *Products) GetById(id int) (product Product){
 		}
 	}
 	return
+}
+
+func save(c *gin.Context){	
+	if token := c.GetHeader("Token"); token!="password"{
+		c.JSON(401,gin.H{
+			"error": "no tiene permisos para realizar la peticion solicitada",
+		})
+		return
+	}
+	var req Product
+	if err:=c.ShouldBindJSON(&req); err!=nil{
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	if req.Nombre==""{
+		c.JSON(404, gin.H{
+			"error": "el campo nombre es requerido",
+		})
+		return
+	}
+	if req.Color==""{
+		c.JSON(404, gin.H{
+			"error": "el campo color es requerido",
+		})
+		return
+	}
+	if req.Precio==0{
+		c.JSON(404, gin.H{
+			"error": "el campo precio es requerido",
+		})
+		return
+	}
+	if req.Stock==0{
+		c.JSON(404, gin.H{
+			"error": "el campo stock es requerido",
+		})
+		return
+	}
+	if req.Codigo==""{
+		c.JSON(404, gin.H{
+			"error": "el campo codigo es requerido",
+		})
+		return
+	}
+	if req.FechaCreacion==""{
+		c.JSON(404, gin.H{
+			"error": "el campo fechaCreacion es requerido",
+		})
+		return
+	}
+	req.ID = prod.Productos[len(prod.Productos)-1].ID +1
+	c.JSON(200,req)
 }
