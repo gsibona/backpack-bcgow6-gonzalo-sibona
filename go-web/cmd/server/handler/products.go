@@ -97,3 +97,101 @@ func (c *Product) GetById() gin.HandlerFunc {
 		ctx.JSON(200,p)
 	}
 }
+
+func (c *Product) ModifyAll() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		token:= ctx.GetHeader("token")
+		if token!="password" {
+			ctx.JSON(401,gin.H{
+				"error": "no tiene permisos para realizar la peticion solicitada",
+			})
+			return
+		}
+		id := ctx.Param("id")
+		idValue,err := strconv.Atoi(id)
+		if err!=nil{
+			ctx.JSON(500,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		var req product
+		if err:=ctx.ShouldBind(&req); err!=nil{
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		p,err:= c.service.ModifyAll(idValue,req.Nombre,req.Color,req.Precio,req.Stock,req.Codigo,req.Publicado,req.FechaCreacion)
+		if err!=nil{
+			ctx.JSON(404,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(200,p)
+	}
+}
+
+func (c *Product) Delete() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		token:= ctx.GetHeader("token")
+		if token!="password" {
+			ctx.JSON(401,gin.H{
+				"error": "no tiene permisos para realizar la peticion solicitada",
+			})
+			return
+		}
+		id := ctx.Param("id")
+		idValue,err := strconv.Atoi(id)
+		if err!=nil{
+			ctx.JSON(500,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		p,err:=c.service.Delete(idValue)
+		if err!=nil{
+			ctx.JSON(404,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(200,p)
+	}
+}
+
+func (c *Product) ModifyValues() gin.HandlerFunc{
+	return func(ctx *gin.Context) {
+		token:= ctx.GetHeader("token")
+		if token!="password" {
+			ctx.JSON(401,gin.H{
+				"error": "no tiene permisos para realizar la peticion solicitada",
+			})
+			return
+		}
+		id := ctx.Param("id")
+		idValue,err := strconv.Atoi(id)
+		if err!=nil{
+			ctx.JSON(500,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		var req product
+		if err:=ctx.ShouldBind(&req); err!=nil{
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		p,err:= c.service.ModifyValues(idValue,req.Nombre,req.Precio)
+		if err!=nil{
+			ctx.JSON(404,gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(200,p)
+	}
+}

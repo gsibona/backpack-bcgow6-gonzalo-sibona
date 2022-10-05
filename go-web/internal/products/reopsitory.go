@@ -20,6 +20,9 @@ type Repository interface{
 	GetById(id int) (Product,error)
 	Store(id int,nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
 	LastID() (int)
+	ModifyAll(Product) (Product,error)
+	Delete(id int) (Product,error)
+	ModifyValues(id int, nombre string, precio float64) (Product,error)
 }
 
 type repository struct{}
@@ -37,18 +40,12 @@ func (r *repository) GetAll() [] Product{
 }
 
 func (r *repository) GetById(id int) (Product,error){
-	products := r.GetAll()
-	var product Product
-	for _,p:=range products{
+	for _,p:=range ps{
 		if p.ID == id{
-			product = p
-			break
+			return p,nil
 		}
 	}
-	if product == (Product{}) {
-		return Product{},fmt.Errorf("no existe el producto con id %d", id)
-	}
-	return product,nil
+	return Product{},fmt.Errorf("no existe el producto con id %d", id)	
 }
 
 func (r *repository) Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error){
@@ -60,4 +57,35 @@ func (r *repository) Store(id int, nombre, color string, precio float64, stock i
 
 func (r *repository) LastID() int{
 	return lastId
+}
+
+func (r *repository) ModifyAll(product Product) (Product,error){
+	for i,p:=range ps{
+		if p.ID == product.ID{
+			ps[i] = product
+			return ps[i],nil
+		}
+	}
+	return Product{},fmt.Errorf("no existe el producto con id %d", product.ID)
+}
+
+func (r *repository) Delete(id int) (Product,error){
+	for i,p:=range ps{
+		if p.ID == id{
+			ps = append(ps[:i], ps[i+1:]...)
+			return p,nil
+		}
+	}
+	return Product{},fmt.Errorf("no existe el producto con id %d", id)
+}
+
+func(r *repository) ModifyValues(id int, nombre string, precio float64) (Product,error){
+	for i,p:=range ps{
+		if p.ID == id{
+			ps[i].Nombre = nombre
+			ps[i].Precio = precio
+			return ps[i],nil
+		}
+	}
+	return Product{},fmt.Errorf("no existe el producto con id %d", id)
 }

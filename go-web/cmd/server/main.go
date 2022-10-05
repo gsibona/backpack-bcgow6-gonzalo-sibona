@@ -16,5 +16,8 @@ func main() {
 	pr.POST("/",p.Store())
 	pr.GET("/",p.GetAll())
 	pr.GET("/:id",p.GetById())
+	pr.PUT("/:id",p.ModifyAll())
+	pr.DELETE("/:id",p.Delete())
+	pr.PATCH(":id",p.ModifyValues())
 	r.Run()
 }
