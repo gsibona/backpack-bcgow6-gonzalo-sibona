@@ -1,13 +1,19 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
-	"github.com/gsibona/backpack-bcgow6-gonzalo-sibona/go-web/internal/products"
 	"github.com/gsibona/backpack-bcgow6-gonzalo-sibona/go-web/cmd/server/handler"
+	"github.com/gsibona/backpack-bcgow6-gonzalo-sibona/go-web/internal/products"
+	"github.com/gsibona/backpack-bcgow6-gonzalo-sibona/go-web/pkg/store"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	repo := products.NewRepository()
+	_ = godotenv.Load()
+	db := store.New(store.FileType, os.Getenv("FILEPATH"))
+	repo := products.NewRepository(db)
 	service := products.NewService(repo)
 	p := handler.NewProduct(service)
 

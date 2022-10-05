@@ -3,7 +3,7 @@ package products
 import "fmt"
 
 type Service interface{
-	GetAll() ([]Product)
+	GetAll() ([]Product,error)
 	GetById(id int) (Product,error)
 	Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
 	ModifyAll(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
@@ -21,7 +21,7 @@ func NewService(r Repository) Service {
 	}
 }
 
-func (s *service)GetAll() []Product{
+func (s *service)GetAll() ([]Product,error){
 	return s.repository.GetAll()
 }
 
@@ -34,7 +34,10 @@ func (s *service) Store(nombre, color string, precio float64, stock int, codigo 
 	if err!=nil{
 		return Product{},err
 	}
-	id := s.repository.LastID()
+	id,err := s.repository.LastID()
+	if err!=nil{
+		return Product{},err
+	}
 	id++
 	return s.repository.Store(id,nombre,color,precio,stock,codigo,publicado,fechaCreacion)
 }

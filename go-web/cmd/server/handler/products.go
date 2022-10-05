@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -37,8 +38,13 @@ func (c *Product) GetAll() gin.HandlerFunc {
 			return
 		}
 
-		p := c.service.GetAll()
-
+		p,err := c.service.GetAll()
+		if err!=nil{
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 		ctx.JSON(200,p)
 	}
 }
@@ -46,7 +52,7 @@ func (c *Product) GetAll() gin.HandlerFunc {
 func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
-		if token!="password" {
+		if token!=os.Getenv("TOKEN") {
 			ctx.JSON(401,gin.H{
 				"error": "no tiene permisos para realizar la peticion solicitada",
 			})
@@ -73,7 +79,7 @@ func (c *Product) Store() gin.HandlerFunc {
 func (c *Product) GetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
-		if token!="password" {
+		if token!=os.Getenv("TOKEN") {
 			ctx.JSON(401,gin.H{
 				"error": "no tiene permisos para realizar la peticion solicitada",
 			})
@@ -101,7 +107,7 @@ func (c *Product) GetById() gin.HandlerFunc {
 func (c *Product) ModifyAll() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
-		if token!="password" {
+		if token!=os.Getenv("TOKEN") {
 			ctx.JSON(401,gin.H{
 				"error": "no tiene permisos para realizar la peticion solicitada",
 			})
@@ -136,7 +142,7 @@ func (c *Product) ModifyAll() gin.HandlerFunc{
 func (c *Product) Delete() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
-		if token!="password" {
+		if token!=os.Getenv("TOKEN") {
 			ctx.JSON(401,gin.H{
 				"error": "no tiene permisos para realizar la peticion solicitada",
 			})
@@ -164,7 +170,7 @@ func (c *Product) Delete() gin.HandlerFunc{
 func (c *Product) ModifyValues() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
-		if token!="password" {
+		if token!=os.Getenv("TOKEN") {
 			ctx.JSON(401,gin.H{
 				"error": "no tiene permisos para realizar la peticion solicitada",
 			})
