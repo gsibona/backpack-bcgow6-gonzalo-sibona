@@ -13,14 +13,14 @@ type Product struct{
 	Precio        float64 `json:"precio"`
 	Stock         int     `json:"stock"`
 	Codigo        string  `json:"codigo"`
-	Publicado     bool    `json:"publicado"`
+	Publicado     *bool    `json:"publicado"`
 	FechaCreacion string  `json:"fechaCreacion"`
 }
 
 type Repository interface{
 	GetAll() ([]Product,error)
 	GetById(id int) (Product,error)
-	Store(id int,nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
+	Store(id int,nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error)
 	LastID() (int,error)
 	ModifyAll(Product) (Product,error)
 	Delete(id int) (Product,error)
@@ -57,7 +57,7 @@ func (r *repository) GetById(id int) (Product,error){
 	return Product{},fmt.Errorf("no existe el producto con id %d", id)	
 }
 
-func (r *repository) Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error){
+func (r *repository) Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error){
 	p := Product{id,nombre,color,precio,stock,codigo,publicado,fechaCreacion}
 	var ps []Product
 	r.db.Read(&ps)

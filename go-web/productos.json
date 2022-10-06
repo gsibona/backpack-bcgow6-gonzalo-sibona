@@ -1,6 +1,3 @@
-{
-    "productos":
-    [
-        {"id":1,"nombre":"lapicera","color":"rojo","precio":100.00,"stock":400,"codigo":"gy87sdbh874","publicado":true,"fechaCreacion":"03/10/2022"}
-    ]
-}
+[
+    {"id":1,"nombre":"lapicera","color":"rojo","precio":100.00,"stock":400,"codigo":"gy87sdbh874","publicado":true,"fechaCreacion":"03/10/2022"}
+]

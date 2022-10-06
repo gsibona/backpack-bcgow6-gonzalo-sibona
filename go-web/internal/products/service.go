@@ -5,8 +5,8 @@ import "fmt"
 type Service interface{
 	GetAll() ([]Product,error)
 	GetById(id int) (Product,error)
-	Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
-	ModifyAll(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error)
+	Store(nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error)
+	ModifyAll(id int, nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error)
 	Delete(id int) (Product, error)
 	ModifyValues(id int, nombre string, precio float64) (Product,error)
 }
@@ -29,8 +29,8 @@ func (s *service)GetById(id int) (Product,error){
 	return s.repository.GetById(id)
 }
 
-func (s *service) Store(nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error){
-	err := notNull(nombre,color,precio,stock,codigo,fechaCreacion)
+func (s *service) Store(nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error){
+	err := notNull(nombre,color,precio,stock,codigo,publicado, fechaCreacion)
 	if err!=nil{
 		return Product{},err
 	}
@@ -42,8 +42,8 @@ func (s *service) Store(nombre, color string, precio float64, stock int, codigo 
 	return s.repository.Store(id,nombre,color,precio,stock,codigo,publicado,fechaCreacion)
 }
 
-func (s *service) ModifyAll(id int, nombre, color string, precio float64, stock int, codigo string, publicado bool, fechaCreacion string) (Product,error){
-	err := notNull(nombre,color,precio,stock,codigo,fechaCreacion)
+func (s *service) ModifyAll(id int, nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error){
+	err := notNull(nombre,color,precio,stock,codigo,publicado,fechaCreacion)
 	if err!=nil{
 		return Product{},err
 	}
@@ -52,7 +52,7 @@ func (s *service) ModifyAll(id int, nombre, color string, precio float64, stock 
 
 
 
-func notNull(nombre, color string, precio float64, stock int, codigo string, fechaCreacion string) (err error){
+func notNull(nombre, color string, precio float64, stock int, codigo string,publicado *bool, fechaCreacion string) (err error){
 	if nombre==""{
 		err = fmt.Errorf("el campo nombre es requerido")
 	}
@@ -68,6 +68,9 @@ func notNull(nombre, color string, precio float64, stock int, codigo string, fec
 	if codigo==""{
 		err = fmt.Errorf("el campo codigo es requerido")
 	}
+	if publicado==nil{
+		err = fmt.Errorf("el campo publicado es requerido")
+	}
 	if fechaCreacion==""{
 		err = fmt.Errorf("el campo fechaPublicacion es requerido")
 	}
@@ -79,7 +82,9 @@ func (s *service) Delete(id int) (Product,error){
 }
 
 func (s *service) ModifyValues(id int, nombre string, precio float64) (Product,error){
-	err := notNull(nombre,"nil",precio,1,"nil","nil")
+	var temp *bool
+	*temp = false
+	err := notNull(nombre,"nil",precio,1,"nil",temp,"nil")
 	if err!=nil{
 		return Product{},err
 	}
