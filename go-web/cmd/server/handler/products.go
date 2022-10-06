@@ -29,6 +29,16 @@ type product struct{
 	FechaCreacion string  `json:"fechaCreacion"`
 }
 
+// ListProducts godoc
+// @Summary 	List products
+// @Tags 		Products
+// @Description get products
+// @Produce  	json
+// @Param token	header string true "token"
+// @Success 200 {object} web.Response
+// @Failure 401 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Router 		/products [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
@@ -48,6 +58,18 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// StoreProducts godoc
+// @Summary 	Store products
+// @Tags 		Products
+// @Description store products
+// @Accept  	json
+// @Produce  	json
+// @Param 		token header string true "token"
+// @Param 		product body products.Product true "Product to store"
+// @Success 	200 {object} web.Response
+// @Failure 	401 {object} web.Response
+// @Failure 	404 {object} web.Response
+// @Router 		/products [post]
 func (c *Product) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
@@ -69,6 +91,17 @@ func (c *Product) Store() gin.HandlerFunc {
 	}
 }
 
+// GetProductById godoc
+// @Summary		Get product by id
+// @Tags		Products
+// @Description	get product by id
+// @Produce 	json
+// @Param 		token header string true "token"
+// @Param 		id path int true "product id"
+// @Success 200 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router 		/products/{id} [get]
 func (c *Product) GetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
@@ -91,6 +124,19 @@ func (c *Product) GetById() gin.HandlerFunc {
 	}
 }
 
+// ModifyProduct godoc
+// @Summary 	Modify product
+// @Tags 		Products
+// @Description modify product
+// @Accept  	json
+// @Produce  	json
+// @Param 		token header string true "token"
+// @Param 		id path int true "product id"
+// @Success 200 {object} web.Response
+// @Failure 401 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router 		/products/{id} [put]
 func (c *Product) ModifyAll() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
@@ -118,6 +164,18 @@ func (c *Product) ModifyAll() gin.HandlerFunc{
 	}
 }
 
+// DeleteProduct godoc
+// @Summary 	Delete product
+// @Tags 		Products
+// @Description delete product
+// @Produce  	json
+// @Param token header string true "token"
+// @Param 		id path int true "product id"
+// @Success 200 {object} web.Response
+// @Failure 401 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router 		/products/{id} [delete]
 func (c *Product) Delete() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
@@ -146,6 +204,18 @@ func (c *Product) Delete() gin.HandlerFunc{
 	}
 }
 
+// ModifyNameAndPriceOfProduct godoc
+// @Summary 	Modify name and price of product
+// @Tags 		Products
+// @Description modify name and price of product
+// @Produce  	json
+// @Param token header string true "token"
+// @Param 		id path int true "product id"
+// @Success 200 {object} web.Response
+// @Failure 401 {object} web.Response
+// @Failure 404 {object} web.Response
+// @Failure 500 {object} web.Response
+// @Router 		/products/{id} [patch]
 func (c *Product) ModifyValues() gin.HandlerFunc{
 	return func(ctx *gin.Context) {
 		token:= ctx.GetHeader("token")
