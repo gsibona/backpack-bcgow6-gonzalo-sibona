@@ -1,0 +1,31 @@
+1_¿Cuáles son las diferencias entre White Box y Black Box?
+
+Black Box se basa en realizar pruebas sobre una estructura interna desconozida, donde solo se evaluan las respuestas y reacciones (comportamiento) del sistema ante distintos escenarios. En cambio, en una White Box, quien ejecuta la prueba tiene conocimiento y visibilidad del codigo, se centran el los detalles del procedimiento del software.
+
+2_¿Qué es un test funcional?
+
+Un test funcional valida el comportamiento funcional del software. Se basan en la entrada y salida del software, con el objetivo de comparar la respuesta con el resultado esperado.
+
+3_¿Qué es un Test de Integración?
+
+Un test de integracion expone el funcionamiento general de la aplicacion, permitiendo evaluar su diseño, desempeño y comportamiento. Exponen la comunicacion entre distintos componentes, con el objetivo de comprobar que todos los bloques de codigo interactuen y se comuniquen entre si generando los resultados esperados.
+
+4_Indicar las dimensiones de calidad prioritarias en MELI.
+
+Las dimensiones de calidad prioritarias en MELI se basan en el modelo ISO/IEC 25010:
+
+-Funcionalidad: completitud funcional, correcion funcional, pertinencia funcionakl
+
+-Rendimiento: comportamiento temporal, utilizacion de recursos, capacidad
+
+-Compatibilidad: coexistencia, interoperabilidad
+
+-Usabilidad: inteligibilidad, aprendisaje, operabilidad, proteccion frente a errores de usuario, estetica, accesibilidad
+
+-Fiabilidad: madurez, disponibilidad, tolerancia a fallos, capacidad de recuperacion
+
+-Seguridad: confidencialidad, integridad, no repudio, autenticidad, responsabilidad
+
+-Mantenibilidad: modularidad, reusabilidad, analizabilidad, capacidad de ser modificado, capacidad de ser aprobado
+
+-Portabilidad: adaptabilidad, facilidad de instalacion, capacidad de ser remplazado
