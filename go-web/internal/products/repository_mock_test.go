@@ -12,13 +12,6 @@ type mockDB struct{
 }
 
 func (db *mockDB) Read(data interface{}) error{
-	if db.products == nil{
-		publicado := true
-		db.products = []Product{
-			{1,"before update","azul", 100.00, 130, "jwnovinsjnfi", &publicado, "20/10/22"},
-			{2,"carpeta","rojo", 500.00, 90, "jklsfnvjfs", &publicado, "13/10/22"},
-		}
-	}
 	t,_ := data.(*[]Product)
 	*t = db.products
 	db.readUsed = true
@@ -32,6 +25,11 @@ func (db *mockDB) Write(data interface{}) error{
 func TestModifyValues(t *testing.T) {
 	db := mockDB{}
 	repository:= NewRepository(&db)
+	publicado := true
+	db.products = []Product{
+		{1,"before update","azul", 100.00, 130, "jwnovinsjnfi", &publicado, "20/10/22"},
+		{2,"carpeta","rojo", 500.00, 90, "jklsfnvjfs", &publicado, "13/10/22"},
+	}
 
 	esperado := "after update"
 	
