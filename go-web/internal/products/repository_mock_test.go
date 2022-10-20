@@ -7,21 +7,25 @@ import (
 )
 
 type mockDB struct{
+	products []Product 
 	readUsed bool
 }
 
 func (db *mockDB) Read(data interface{}) error{
-	publicado := true
-	products := &[]Product{
-		{1,"before update","azul", 100.00, 130, "jwnovinsjnfi", &publicado, "20/10/22"},
-		{2,"carpeta","rojo", 500.00, 90, "jklsfnvjfs", &publicado, "13/10/22"},
+	if db.products == nil{
+		publicado := true
+		db.products = []Product{
+			{1,"before update","azul", 100.00, 130, "jwnovinsjnfi", &publicado, "20/10/22"},
+			{2,"carpeta","rojo", 500.00, 90, "jklsfnvjfs", &publicado, "13/10/22"},
+		}
 	}
 	t,_ := data.(*[]Product)
-	*t = *products
+	*t = db.products
 	db.readUsed = true
 	return nil
 }
 func (db *mockDB) Write(data interface{}) error{
+	db.products = data.([]Product)
 	return nil
 }
 
@@ -31,9 +35,12 @@ func TestModifyValues(t *testing.T) {
 
 	esperado := "after update"
 	
-	resultado, err:= repository.ModifyValues(1,"after update", 300.00)
-
+	_, err:= repository.ModifyValues(1,"after update", 300.00)
 	assert.Nil(t,err)
+	
+	resultado,err:= repository.GetById(1)
+	assert.Nil(t,err)
+
 	assert.Equal(t,esperado,resultado.Nombre,"deben ser iguales")
 	assert.True(t,db.readUsed,"debe ser utilizado")
 }
