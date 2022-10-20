@@ -82,9 +82,8 @@ func (s *service) Delete(id int) (Product,error){
 }
 
 func (s *service) ModifyValues(id int, nombre string, precio float64) (Product,error){
-	var temp *bool
-	*temp = false
-	err := notNull(nombre,"nil",precio,1,"nil",temp,"nil")
+	temp := false
+	err := notNull(nombre,"nil",precio,1,"nil",&temp,"nil")
 	if err!=nil{
 		return Product{},err
 	}
