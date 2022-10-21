@@ -1,6 +1,6 @@
 package main
 
-import (
+/*import (
 	"encoding/json"
 	"net/http"
 	"os"
@@ -164,4 +164,4 @@ func save(c *gin.Context){
 	}
 	req.ID = prod.Productos[len(prod.Productos)-1].ID +1
 	c.JSON(200,req)
-}
+}*/

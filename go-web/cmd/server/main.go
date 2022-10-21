@@ -41,5 +41,7 @@ func main() {
 	pr.PUT("/:id",p.ModifyAll())
 	pr.DELETE("/:id",p.Delete())
 	pr.PATCH(":id",p.ModifyValues())
-	r.Run()
+	if err := r.Run(); err!=nil{
+		panic(err)
+	}
 }

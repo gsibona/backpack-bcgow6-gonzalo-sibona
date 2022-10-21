@@ -48,7 +48,9 @@ func (r *repository) GetAll() ([]Product,error){
 
 func (r *repository) GetById(id int) (Product,error){
 	var ps []Product
-	r.db.Read(&ps)
+	if err:=r.db.Read(&ps); err!=nil{
+		return Product{},err
+	}
 	for _,p:=range ps{
 		if p.ID == id{
 			return p,nil
@@ -60,7 +62,9 @@ func (r *repository) GetById(id int) (Product,error){
 func (r *repository) Store(id int, nombre, color string, precio float64, stock int, codigo string, publicado *bool, fechaCreacion string) (Product,error){
 	p := Product{id,nombre,color,precio,stock,codigo,publicado,fechaCreacion}
 	var ps []Product
-	r.db.Read(&ps)
+	if err:=r.db.Read(&ps); err!=nil{
+		return Product{},err
+	}
 	ps = append(ps,p)
 	if err:=r.db.Write(ps); err!=nil {
 		return Product{},err
@@ -81,7 +85,9 @@ func (r *repository) LastID() (int,error){
 
 func (r *repository) ModifyAll(product Product) (Product,error){
 	var ps []Product
-	r.db.Read(&ps)
+	if err:=r.db.Read(&ps); err!=nil{
+		return Product{},err
+	}
 	for i,p:=range ps{
 		if p.ID == product.ID{
 			ps[i] = product
@@ -96,7 +102,9 @@ func (r *repository) ModifyAll(product Product) (Product,error){
 
 func (r *repository) Delete(id int) (Product,error){
 	var ps []Product
-	r.db.Read(&ps)
+	if err:=r.db.Read(&ps); err!=nil{
+		return Product{},err
+	}
 	for i,p:=range ps{
 		if p.ID == id{
 			ps = append(ps[:i], ps[i+1:]...)
@@ -111,7 +119,9 @@ func (r *repository) Delete(id int) (Product,error){
 
 func(r *repository) ModifyValues(id int, nombre string, precio float64) (Product,error){
 	var ps []Product
-	r.db.Read(&ps)
+	if err:=r.db.Read(&ps); err!=nil{
+		return Product{},err
+	}
 	for i,p:=range ps{
 		if p.ID == id{
 			ps[i].Nombre = nombre
