@@ -1,0 +1,39 @@
+Seleccionar el nombre, el puesto y la localidad de los departamentos donde trabajan los vendedores.
+
+SELECT e.nombre, e.puesto, d.localidad FROM empleado AS e
+JOIN departamento AS d ON e.depto_nro = d.depto_nro
+
+Visualizar los departamentos con más de cinco empleados.
+
+SELECT d.* FROM departamento AS d
+JOIN empleado AS e ON e.depto_nro = d.depto_nro
+GROUP BY depto_nro
+HAVING COUNT(*) > 5
+
+Mostrar el nombre, salario y nombre del departamento de los empleados que tengan el mismo puesto que ‘Mito Barchuk’.
+
+SELECT e.nombre, e.salario, d.nombre_depto FROM empleado AS e
+JOIN departamento AS d ON e.depto_nro = d.depto_nro
+WHERE d.nombre_depto = (SELECT d.nombre_depto FROM d WHERE nombre LIKE "Mito" AND apellido LIKE "Barchuk")
+
+Mostrar los datos de los empleados que trabajan en el departamento de contabilidad, ordenados por nombre.
+
+SELECT e.* FROM empleado AS e
+JOIN departamento AS d ON e.depto_nro = d.depto_nro
+WHERE d.nombre_depto LIKE "contabilidad"
+ORDER BY e.nombre
+
+
+Mostrar el nombre del empleado que tiene el salario más bajo.
+
+SELECT nombre FROM empleado
+ORDER BY salario DESC
+LIMIT 1
+
+Mostrar los datos del empleado que tiene el salario más alto en el departamento de ‘Ventas’.
+
+SELECT e.* FROM empleado AS e
+JOIN departamento AS d ON e.depto_nro = d.depto_nro
+WHERE d.nombre_depto LIKE "ventas"
+ORDER BY e.salario ASC
+LIMIT 1
